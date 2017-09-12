@@ -1,5 +1,5 @@
 # CSS 重要觀念一覽
-
+取自MDN的CSS Turtorial
 ## Basic
 只要有一個property-value pair出錯，整條css rule都會被忽略
 
@@ -145,8 +145,64 @@ a:active{}
 -----
 
 ## Box Model
+(圖)
 
+* border是outer edge和inner edge的寬度 (像是皮膚一樣)，所以物體的高度預設從outer edge內都計算 (人的身高也是從皮膚外量測的)
+### background-clip
+background預設延展到outer edge，可以透過background-clip設定
+```css
+.default { background-clip: border-box; }       /* 延展到outer edge */
+.padding-box { background-clip: padding-box; }  /* 延展到inner edge */
+.content-box { background-clip: content-box; }  /* 只在padding內的content box */
+```
 
+### box-sizing vs min-/max- width/height
+https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing
+
+### margin collapsing
+1. the smaller margin's effective width is reduced to 0, leaving only the larger margin.
+
+###  100% not working!?
+1. default height and width in browser
+    * Box heights don't observe percentage lengths; box height always adopts the height of the box content, unless a specific absolute height is set ...(?)
+
+2. % => "% of the containing element's(parent's) width."
 
 ## Display
+1. block
+    * 會換行
+2. inline
+    * width & height無作用
+    * 任何 padding, margin, and border 會影響週圍的inline元素的position，但不影響block的元素
+3. inline-box
+    * 不會換行，inline排列
+    * 可以使用width和height設定尺寸
 
+
+## Visual formatting model
+https://developer.mozilla.org/en-US/docs/Web/CSS/Visual_formatting_model
+
+
+
+## RWD (Responsive Web Design)
+
+* 不同裝置有不同的螢幕可視大小
+    * 使用 meta tag's viewport 偵測
+    * 安排不同版面 -> grid system，[實作](https://www.w3schools.com/css/css_rwd_grid.asp)
+* 永遠只有垂直捲動，禁止水平捲動
+    * width MUST flexible
+    * height: fixed、flexible
+
+### media-query
+* [CSS Media Queries 介紹與基礎應用](http://muki.tw/tech/css-media-queries-introduce-basic/)
+* [回應式網頁設計基礎](https://developers.google.com/web/fundamentals/design-and-ui/responsive/?hl=zh-tw)
+
+### css variable
+[原生CSS 變數](http://muki.tw/tech/native-css-variables/)
+
+
+### css hack
+* [zero-height container problem](https://stackoverflow.com/questions/8554043/what-is-a-clearfix)
+* [clearfix](https://stackoverflow.com/questions/211383/what-methods-of-clearfix-can-i-use)
+* [all-about-floats](https://css-tricks.com/all-about-floats/)
+* [containing floats](http://complexspiral.com/publications/containing-floats/)

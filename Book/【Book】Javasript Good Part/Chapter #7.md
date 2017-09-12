@@ -164,5 +164,41 @@ console.log(BFReg.test("Hello Angus! Your name is Angus."));  // true
 console.log(BFReg.test("Hello Kitty! Your name is Joe."));    // false
 ```
 
+#### sticky matching flag ```y``` (ES6)
+* 可自訂、記錄要match的位置(```pattern.lastIndex```)，有match到才更新，沒有就歸0
+* 可以增進match的效能(比flag g快)、一次scan同時比對多個RegExp...等
+* [比較flags：g、none、y](http://www.loganfranken.com/blog/831/es6-everyday-sticky-regex-matches/)
+
+
+```javascript
+// 每個位置pos使用4個regexp比對
+let parser = (input, match) => {
+    for (let pos = 0, lastPos = input.length; pos < lastPos; ) {
+        for (let i = 0; i < match.length; i++) {
+            // 若有比對到，跳到pattern.lastIndex的位置再開始下一輪比對
+            match[i].pattern.lastIndex = pos
+            let found
+            if ((found = match[i].pattern.exec(input)) !== null) {
+                match[i].action(found)
+                pos = match[i].pattern.lastIndex
+                break
+            }
+        }
+    }
+}
+// match到的片段輸出成json
+let report = (match) => {
+    console.log(JSON.stringify(match))
+}
+
+// 一次比對多個regexp
+parser("Foo 1 Bar 7 Baz 42", [
+    { pattern: /^Foo\s+(\d+)/y, action: (match) => report(match) },
+    { pattern: /^Bar\s+(\d+)/y, action: (match) => report(match) },
+    { pattern: /^Baz\s+(\d+)/y, action: (match) => report(match) },
+    { pattern: /^\s*/y,         action: (match) => {}            }
+])
+```
+
 ## 檢驗工具 & Cheatsheet
-撰寫遇到問題時，可以直接到 [這個網站](http://regexr.com/) 查閱 & 測試效果，再套用回程式比較有效率。
+撰寫遇到問題時，可以直接到 [這個網站](http://regexr.com/) 查閱 & 測試效果，再套用回程式比較有效率。需要教學可以到[這個網站](https://regexone.com/)。
